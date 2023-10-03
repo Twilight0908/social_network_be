@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,6 +23,10 @@ public class Account {
     private String password;
     private String email;
     private boolean gender;
+    private LocalDate birthday;
+    private String phone;
+    private boolean online;
+    private boolean ban;
     @Column(columnDefinition = "TEXT")
     private String avatar;
     @Column(columnDefinition = "TEXT")

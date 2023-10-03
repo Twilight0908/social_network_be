@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -34,7 +35,10 @@ public class RegisterController {
                                                  @RequestParam(value = "username") String username,
                                                  @RequestParam(value = "password") String password,
                                                  @RequestParam(value = "email") String email,
-                                                 @RequestParam(value = "gender") boolean gender
+                                                 @RequestParam(value = "gender") boolean gender,
+                                                 @RequestParam(value = "birthday") String birthday,
+                                                 @RequestParam(value = "phone") String phone
+
     ) throws IOException {
         String fileName = file.getOriginalFilename();
         String filePath = fileUpload + "/" + fileName;
@@ -51,6 +55,10 @@ public class RegisterController {
         newAccount.setPassword(password);
         newAccount.setEmail(email);
         newAccount.setGender(gender);
+        newAccount.setBirthday(LocalDate.parse(birthday));
+        newAccount.setPhone(phone);
+        newAccount.setOnline(false);
+        newAccount.setBan(false);
         newAccount.setAvatar(fileName);
         newAccount.setCreatedAt(LocalDateTime.now());
         newAccount.setRole(role);

@@ -34,7 +34,15 @@ public class LoginController {
         String token = createToken(account.getUsername());
 
         Account accountToken = accountService.findByUsername(account.getUsername());
-        return new AccountToken(accountToken.getId(), accountToken.getLastName(), accountToken.getAvatar(), accountToken.getThumbnail(), token, accountToken.getRole());
+        return new AccountToken(
+                accountToken.getId(),
+                accountToken.getLastName(),
+                accountToken.isOnline(),
+                accountToken.isBan(),
+                accountToken.getAvatar(),
+                accountToken.getThumbnail(),
+                token,
+                accountToken.getRole());
     }
 
     public static final String PRIVATE_KEY = "abc1234567890xyz";

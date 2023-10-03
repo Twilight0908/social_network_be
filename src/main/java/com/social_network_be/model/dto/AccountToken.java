@@ -9,6 +9,8 @@ import lombok.Data;
 public class AccountToken {
     private int id;
     private String lastName;
+    private boolean online;
+    private boolean ban;
     private String avatar;
     private String thumbnail;
     private String token;
