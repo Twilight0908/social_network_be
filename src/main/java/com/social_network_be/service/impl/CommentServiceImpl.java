@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements ICommentService {
     @Autowired
-    ICommentRepo commentRepo;
+    private ICommentRepo commentRepo;
 
     @Override
     public Comment save(Comment comment) {

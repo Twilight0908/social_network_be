@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements IPostService {
     @Autowired
-    IPostRepo postRepo;
+    private IPostRepo postRepo;
 
     @Override
     public Post save(Post post) {
