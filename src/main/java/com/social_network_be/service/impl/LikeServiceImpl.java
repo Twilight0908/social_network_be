@@ -1,6 +1,6 @@
 package com.social_network_be.service.impl;
 
-import com.social_network_be.model.Like;
+import com.social_network_be.model.Likes;
 import com.social_network_be.model.Post;
 import com.social_network_be.repository.ILikeRepo;
 import com.social_network_be.service.iService.ILikeService;
@@ -20,12 +20,12 @@ public class LikeServiceImpl implements ILikeService {
     }
 
     @Override
-    public Like save(Like like) {
+    public Likes save(Likes likes) {
         return null;
     }
 
     @Override
-    public Like edit(Like like) {
+    public Likes edit(Likes likes) {
         return null;
     }
 
@@ -35,12 +35,12 @@ public class LikeServiceImpl implements ILikeService {
     }
 
     @Override
-    public Like findById(int id) {
+    public Likes findById(int id) {
         return null;
     }
 
     @Override
-    public List<Like> getAll() {
+    public List<Likes> getAll() {
         return null;
     }
 }
