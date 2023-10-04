@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -27,6 +28,11 @@ public class AccountController {
     private IAccountService accountService;
     @Value("${upload.profile.path}")
     private String fileUpload;
+
+    @GetMapping("/allAccount")
+    public ResponseEntity<List<Account>> getAllAccount() {
+        return new ResponseEntity<>(accountService.getAll(), HttpStatus.OK);
+    }
 
     @GetMapping("/account/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable int id) {
