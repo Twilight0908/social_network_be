@@ -35,7 +35,6 @@ public class AccountController {
 
     @PostMapping("/account/edit/{id}")
     public ResponseEntity<Account> editAccount(@PathVariable int id,
-//                                               @RequestParam("file") MultipartFile file,
                                                @RequestParam(value = "firstName") String firstName,
                                                @RequestParam(value = "lastName") String lastName,
                                                @RequestParam(value = "email") String email,
@@ -49,15 +48,6 @@ public class AccountController {
         account.setGender(gender);
         account.setBirthday(LocalDate.parse(birthday));
         account.setPhone(phone);
-//        if (file != null) {
-//            String fileName = file.getOriginalFilename();
-//            String filePath = fileUpload + "/" + fileName;
-//            File imageFile = new File(filePath);
-//            if (!imageFile.exists()) {
-//                file.transferTo(imageFile);
-//            }
-//            account.setAvatar(fileName);
-//        }
         return new ResponseEntity<>(accountService.edit(account), HttpStatus.OK);
     }
 }
