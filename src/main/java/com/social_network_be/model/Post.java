@@ -5,6 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "posts")
@@ -18,7 +21,8 @@ public class Post {
     private String content;
     private String image;
     private LocalDateTime time;
-
+    @ManyToOne
+    private Status status;
     public Post() {
     }
 }

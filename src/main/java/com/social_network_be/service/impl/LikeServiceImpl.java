@@ -1,6 +1,8 @@
 package com.social_network_be.service.impl;
 
+import com.social_network_be.model.Account;
 import com.social_network_be.model.Like;
+import com.social_network_be.model.Post;
 import com.social_network_be.repository.ILikeRepo;
 import com.social_network_be.service.iService.ILikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +40,14 @@ public class LikeServiceImpl implements ILikeService {
     public List<Like> getAll() {
         return likeRepo.findAll();
     }
+
+    @Override
+    public void deleteByPostId(int postId) {
+        likeRepo.deleteByPostId(postId);
+    }
+
+//    @Override
+//    public List<Like> findAllByAccountAAndPost(Account account, Post post) {
+//        return likeRepo.findAllByAccountAAndPost(account,post);
+//    }
 }

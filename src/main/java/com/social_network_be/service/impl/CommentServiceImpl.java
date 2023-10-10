@@ -38,4 +38,9 @@ public class CommentServiceImpl implements ICommentService {
     public List<Comment> getAll() {
         return commentRepo.findAll();
     }
+
+    @Override
+    public void deleteByPostId(int postId) {
+        commentRepo.deleteByPostId(postId);
+    }
 }
