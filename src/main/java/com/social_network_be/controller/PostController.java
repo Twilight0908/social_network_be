@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,7 @@ public class PostController {
     @PostMapping("{id}")
     public ResponseEntity<Post> createPost(@PathVariable int id
             , @RequestParam(value = "content") String content
+            ,@RequestParam(value = "statusId") int statusId
             , @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         String fileName = null;
         int count = 0;
@@ -59,6 +61,7 @@ public class PostController {
         newPost.setTime(LocalDateTime.now());
         newPost.setLoggedInUser(accountService.findById(id));
         newPost.setImage(fileName);
+        newPost.setStatus(new Status(statusId));
         if(count <= 0){
             return new ResponseEntity<>(newPost , HttpStatus.NOT_FOUND);
         }
@@ -73,5 +76,9 @@ public class PostController {
         Optional<Post> postToDelete = Optional.ofNullable(postService.findById(postId));
         postToDelete.ifPresent(post -> postService.delete(post.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/getPostFollow/{idAccount}")
+    public ResponseEntity<List<Post>> getAllPostByFollow(@PathVariable int idAccount){
+        return ResponseEntity.ok(postService.getAllByFollow(idAccount));
     }
 }
