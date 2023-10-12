@@ -32,22 +32,24 @@ public class PostController {
     IStatusService statusService;
     @Value("${upload.profile.path}")
     private String fileUpload;
+
     @GetMapping("/apiStatus")
-    public ResponseEntity<List<Status>> getAllStatus(){
+    public ResponseEntity<List<Status>> getAllStatus() {
         return ResponseEntity.ok(statusService.getAll());
     }
+
     @PostMapping("{id}")
     public ResponseEntity<Post> createPost(@PathVariable int id
             , @RequestParam(value = "content") String content
-            ,@RequestParam(value = "statusId") int statusId
+            , @RequestParam(value = "statusId") int statusId
             , @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         String fileName = null;
         int count = 0;
-        if(content != null){
-            count ++;
+        if (content != null) {
+            count++;
         }
         if (file != null) {
-            count ++;
+            count++;
             fileName = file.getOriginalFilename();
             String filePath = fileUpload + "/" + fileName;
             File imageFile = new File(filePath);
@@ -55,30 +57,70 @@ public class PostController {
                 file.transferTo(imageFile);
             }
         }
-
         Post newPost = new Post();
         newPost.setContent(content);
         newPost.setTime(LocalDateTime.now());
         newPost.setLoggedInUser(accountService.findById(id));
         newPost.setImage(fileName);
         newPost.setStatus(new Status(statusId));
-        if(count <= 0){
-            return new ResponseEntity<>(newPost , HttpStatus.NOT_FOUND);
+        if (count <= 0) {
+            return new ResponseEntity<>(newPost, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(postService.save(newPost), HttpStatus.OK);
     }
+
+    @PostMapping("/{idAccount}/{idPost}")
+    public ResponseEntity<Post> updatePost(@PathVariable int idAccount
+            , @PathVariable int idPost
+            , @RequestParam(value = "content") String content
+            , @RequestParam(value = "statusId") int statusId
+            , @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        String fileName = null;
+        int count = 0;
+        if (content != null) {
+            count++;
+        }
+        if (file != null) {
+            count++;
+            fileName = file.getOriginalFilename();
+            String filePath = fileUpload + "/" + fileName;
+            File imageFile = new File(filePath);
+            if (!imageFile.exists()) {
+                file.transferTo(imageFile);
+            }
+        }
+        Post newPost = new Post();
+        newPost.setId(idPost);
+        newPost.setContent(content);
+        newPost.setTime(LocalDateTime.now());
+        newPost.setLoggedInUser(accountService.findById(idAccount));
+        newPost.setImage(fileName);
+        newPost.setStatus(new Status(statusId));
+        if (count <= 0) {
+            return new ResponseEntity<>(newPost, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postService.save(newPost), HttpStatus.OK);
+    }
+
     @GetMapping
-    public ResponseEntity<List<Post>> finAll(){
+    public ResponseEntity<List<Post>> finAll() {
         return ResponseEntity.ok(postService.getAll());
     }
+
     @PostMapping("/delete/{postId}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable int postId) {
         Optional<Post> postToDelete = Optional.ofNullable(postService.findById(postId));
         postToDelete.ifPresent(post -> postService.delete(post.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @GetMapping("/getPostFollow/{idAccount}")
-    public ResponseEntity<List<Post>> getAllPostByFollow(@PathVariable int idAccount){
+    public ResponseEntity<List<Post>> getAllPostByFollow(@PathVariable int idAccount) {
         return ResponseEntity.ok(postService.getAllByFollow(idAccount));
+    }
+
+    @GetMapping("/getAllByAccount/{idAccount}")
+    public ResponseEntity<List<Post>> getAllByAccount(@PathVariable int idAccount) {
+        return ResponseEntity.ok(postService.getAllByUserId(idAccount));
     }
 }

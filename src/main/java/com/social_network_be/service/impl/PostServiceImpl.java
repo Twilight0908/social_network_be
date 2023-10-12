@@ -55,4 +55,9 @@ public class PostServiceImpl implements IPostService {
     public List<Post> getAllByFollow(int userId) {
         return postRepo.getAllByFollow(userId);
     }
+
+    @Override
+    public List<Post> getAllByUserId(int userId) {
+        return postRepo.getAllByUserId(userId);
+    }
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IPostService extends IService<Post>{
     List<Post> getAllByFollow(@Param("userId") int userId);
+    List<Post> getAllByUserId(int userId);
 }
