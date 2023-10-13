@@ -36,7 +36,7 @@ public class PostController {
     public ResponseEntity<List<Status>> getAllStatus(){
         return ResponseEntity.ok(statusService.getAll());
     }
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<Post> createPost(@PathVariable int id
             , @RequestParam(value = "content") String content
             ,@RequestParam(value = "statusId") int statusId

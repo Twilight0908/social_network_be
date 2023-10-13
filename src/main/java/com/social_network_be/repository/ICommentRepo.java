@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICommentRepo extends JpaRepository<Comment,Integer> {
     void deleteByPostId(int postId);
+    Comment findByContent (String content);
+//    List<Comment> findAllByProductId(int productId);
 }
 
