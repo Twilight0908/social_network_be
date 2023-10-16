@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -122,5 +123,9 @@ public class PostController {
     @GetMapping("/getAllByAccount/{idAccount}")
     public ResponseEntity<List<Post>> getAllByAccount(@PathVariable int idAccount) {
         return ResponseEntity.ok(postService.getAllByUserId(idAccount));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> findById(@PathVariable int id){
+        return ResponseEntity.ok(postService.findById(id));
     }
 }
