@@ -69,7 +69,11 @@ public class PostController {
         }
         return new ResponseEntity<>(postService.save(newPost), HttpStatus.OK);
     }
-
+    @PostMapping("/createPost")
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        post.setTime(LocalDateTime.now());
+        return new ResponseEntity<>(postService.save(post), HttpStatus.CREATED);
+    }
     @PostMapping("/{idAccount}/{idPost}")
     public ResponseEntity<Post> updatePost(@PathVariable int idAccount
             , @PathVariable int idPost

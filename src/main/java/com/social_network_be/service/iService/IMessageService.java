@@ -1,7 +1,9 @@
 package com.social_network_be.service.iService;
+import com.social_network_be.model.Message;
 import com.social_network_be.model.dto.MessageCreateBindingModel;
 import com.social_network_be.model.dto.MessageFriendsViewModel;
 import com.social_network_be.model.dto.MessageServiceModel;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -10,4 +12,5 @@ public interface IMessageService {
     List<MessageServiceModel> getAllMessages(String loggedInUsername, int chatUserId);
 
     List<MessageFriendsViewModel> getAllFriendMessages(String loggedInUsername);
+    List<Message> initialStateAllChatFriends(int loggedInUserId);
 }

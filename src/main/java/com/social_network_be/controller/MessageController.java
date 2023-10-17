@@ -12,12 +12,9 @@ import com.social_network_be.service.iService.IMessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +43,23 @@ public class MessageController {
                     .map(messageServiceModel -> modelMapper.map(messageServiceModel, MessageAllViewModel.class))
                     .collect(Collectors.toList());
     }
+    @GetMapping("/allFriend/{id}")
+    public List<Message> getAllChatFriends(@PathVariable int id){
+        return messageService.initialStateAllChatFriends(id);
+    }
+
     @PostMapping( "/friend")
     public List<MessageFriendsViewModel> getAllFriendMessages(@RequestBody Account principal) {
         Account accountPrincipal = accountService.findByUsername(principal.getUsername());
         String loggedInUsername = accountPrincipal.getUsername();
         return messageService.getAllFriendMessages(loggedInUsername);
     }
+//    gửi tin nhắn đến một người dùng cụ thể trong đó messageCreateBindingModel sẽ là nội dung tin nhắn
+//    trong đó bao gồm id của người nhận và content gửi đi
+//    và principal sẽ là account đang đăng nhập và máp MessageServiceModel sang message và lưu vào database ok
     @MessageMapping("/message")
-    public void createPrivateChatMessages(@RequestBody MessageCreateBindingModel messageCreateBindingModel, Principal principal, SimpMessageHeaderAccessor headerAccessor) throws Exception {
-        MessageServiceModel message = messageService.createMessage(messageCreateBindingModel, principal.getName());
+    public void createPrivateChatMessages(@RequestBody MessageCreateBindingModel messageCreateBindingModel, Account principal) throws Exception {
+        MessageServiceModel message = messageService.createMessage(messageCreateBindingModel, principal.getUsername());
         MessageAllViewModel messageAllViewModel = this.modelMapper.map(message, MessageAllViewModel.class);
         if (messageAllViewModel != null) {
             String response = objectMapper.writeValueAsString(messageAllViewModel);

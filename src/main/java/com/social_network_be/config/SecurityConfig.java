@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // cấu hình phân quyền
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login", "/register","/apiPost/**","/app/**","/topic/**","/ws/**","/apiAccount/account/*").permitAll()
+        http.authorizeRequests().antMatchers("/login", "/register","/fail","/apiPost/**","/app/**","/topic/**","/ws/**","/apiAccount/account/*","/apiUser/**").permitAll()
                 .and().authorizeRequests().antMatchers("/apiAccount/account/**","/apiAccount/account/edit/**","/apiLike/**").hasRole("USER")
                 .and().authorizeRequests().antMatchers().hasRole("ADMIN")
                 .and().authorizeRequests().anyRequest().authenticated()
@@ -52,16 +52,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
     }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.social_network_be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,14 +10,17 @@ import java.util.List;
 
 @Data
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
     private boolean gender;
     private LocalDate birthday;
@@ -28,6 +32,8 @@ public class Account {
     @Column(columnDefinition = "TEXT")
     private String thumbnail;
     private LocalDateTime createdAt;
+    @Column(columnDefinition = "TEXT")
+    private String address;
 
     @ManyToOne
     private Role role;

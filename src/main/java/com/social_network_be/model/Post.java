@@ -1,5 +1,6 @@
 package com.social_network_be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "posts")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

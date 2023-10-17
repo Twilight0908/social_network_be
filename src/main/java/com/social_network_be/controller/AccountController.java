@@ -6,13 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -22,38 +16,51 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/apiAccount")
 public class AccountController {
     @Autowired
     private IAccountService accountService;
     @Value("${upload.profile.path}")
     private String fileUpload;
 
-    @GetMapping("/allAccount")
+    @GetMapping("/apiAccount/allAccount")
     public ResponseEntity<List<Account>> getAllAccount() {
         return new ResponseEntity<>(accountService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/account/{id}")
+    @GetMapping("/apiAccount/account/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable int id) {
         return new ResponseEntity<>(accountService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/account/edit/{id}")
-    public ResponseEntity<Account> editAccount(@PathVariable int id,
-                                               @RequestParam(value = "firstName") String firstName,
-                                               @RequestParam(value = "lastName") String lastName,
-                                               @RequestParam(value = "email") String email,
-                                               @RequestParam(value = "gender") boolean gender,
-                                               @RequestParam(value = "birthday") String birthday,
-                                               @RequestParam(value = "phone") String phone) throws IOException {
-        Account account = accountService.findById(id);
-        account.setFirstName(firstName);
-        account.setLastName(lastName);
-        account.setEmail(email);
-        account.setGender(gender);
-        account.setBirthday(LocalDate.parse(birthday));
-        account.setPhone(phone);
-        return new ResponseEntity<>(accountService.edit(account), HttpStatus.OK);
+    @GetMapping("/apiUser/user/{id}")
+    public ResponseEntity<Account> getUser(@PathVariable int id) {
+        return new ResponseEntity<>(accountService.findById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/apiUser/editUser/{id}")
+    public ResponseEntity<Account> editUser(@PathVariable int id, @RequestBody Account user) {
+        Account eUser = accountService.findById(id);
+        eUser.setFirstName(user.getFirstName());
+        eUser.setLastName(user.getLastName());
+        eUser.setEmail(user.getEmail());
+        eUser.setPhone(user.getPhone());
+        eUser.setBirthday(user.getBirthday());
+        eUser.setAddress(user.getAddress());
+        eUser.setGender(user.isGender());
+        return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
+    }
+
+    @PostMapping("/apiUser/editUser/{id}/avatar")
+    private ResponseEntity<Account> editAvatar(@PathVariable int id, @RequestBody Account user) {
+        Account eUser = accountService.findById(id);
+        eUser.setAvatar(user.getAvatar());
+        return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
+    }
+
+    @PostMapping("/apiUser/editUser/{id}/thumbnail")
+    private ResponseEntity<Account> editThumbnail(@PathVariable int id, @RequestBody Account user) {
+        Account eUser = accountService.findById(id);
+        eUser.setThumbnail(user.getThumbnail());
+        return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
     }
 }

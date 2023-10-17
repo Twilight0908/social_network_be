@@ -75,22 +75,17 @@ public class MessageServiceImpl implements IMessageService {
     @Override
     public List<MessageFriendsViewModel> getAllFriendMessages(String loggedInUsername) {
         Account loggedInUser = accountRepo.findByUsername(loggedInUsername);
-        List<Message> allUnreadMessages = new ArrayList<>();
-        List<Message> messages1 = new ArrayList<>();
-        List<Message> messages2 = new ArrayList<>();
-        List<Message> messageList = messageRepository.findAll();
-        for (int i = 0; i < messageList.size(); i++) {
-            if(messageList.get(i).getToUser().getId() == loggedInUser.getId()){
-                messages1.add(messageList.get(i));
-            }
-        }
-
-
+        List<Message> allUnreadMessages = messageRepository.getAllUnreadMessages(loggedInUser.getId())  ;
         List<MessageServiceModel> messageServiceModels = allUnreadMessages.stream().map(message -> modelMapper.map(message , MessageServiceModel.class)).collect(Collectors.toList());
         List<MessageServiceModel> allFriendsMessages =  messageServiceModels.stream()
                 .filter(message -> message.getRelationship().getStatus() == 1)
                 .collect(Collectors.toList());
         return mapToMessageFriendsViewModel(loggedInUser.getId(), allFriendsMessages);
+    }
+
+    @Override
+    public List<Message> initialStateAllChatFriends(int loggedInUserId) {
+        return messageRepository.initialStateAllChatFriends(loggedInUserId);
     }
 
     private List<MessageFriendsViewModel> mapToMessageFriendsViewModel(int loggedInUserId, List<MessageServiceModel> allUnreadMessages) {

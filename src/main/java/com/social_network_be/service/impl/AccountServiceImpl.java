@@ -24,6 +24,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public Account findByUsernameAndPassword(String username, String password) {
+        return iAccountRepo.findByUsernameAndPassword(username,password);
+    }
+
+    @Override
     public Account save(Account account) {
         return iAccountRepo.save(account);
     }
@@ -50,9 +55,9 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = iAccountRepo.findByUsername(username);
+        Account user = iAccountRepo.findByUsername(username);
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(account.getRole());
-        return new User(username, account.getPassword(), roles);
+        roles.add(user.getRole());
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), roles);
     }
 }
