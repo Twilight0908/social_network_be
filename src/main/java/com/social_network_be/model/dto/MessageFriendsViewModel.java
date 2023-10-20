@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class MessageFriendsViewModel {
     private String id;
     private String fromUserId;
-    private String fromUserProfilePicUrl;
+    private String fromUserAvatar;
     private String fromUserFirstName;
     private String fromUserLastName;
     private String content;
@@ -31,12 +31,12 @@ public class MessageFriendsViewModel {
         this.fromUserId = fromUserId;
     }
 
-    public String getFromUserProfilePicUrl() {
-        return this.fromUserProfilePicUrl;
+    public String getFromUserAvatar() {
+        return fromUserAvatar;
     }
 
-    public void setFromUserProfilePicUrl(String fromUserProfilePicUrl) {
-        this.fromUserProfilePicUrl = fromUserProfilePicUrl;
+    public void setFromUserAvatar(String fromUserAvatar) {
+        this.fromUserAvatar = fromUserAvatar;
     }
 
     public String getFromUserFirstName() {

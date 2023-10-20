@@ -3,6 +3,7 @@ package com.social_network_be.service.impl;
 import com.social_network_be.model.Account;
 import com.social_network_be.model.Message;
 import com.social_network_be.model.Relationship;
+import com.social_network_be.model.dto.MessageAllViewModel;
 import com.social_network_be.model.dto.MessageCreateBindingModel;
 import com.social_network_be.model.dto.MessageFriendsViewModel;
 import com.social_network_be.model.dto.MessageServiceModel;

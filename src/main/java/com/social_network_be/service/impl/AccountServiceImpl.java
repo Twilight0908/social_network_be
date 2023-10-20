@@ -29,6 +29,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public List<Account> findAllByLastNameContaining(String lastName) {
+        return iAccountRepo.findAllByLastNameContaining(lastName);
+    }
+
+    @Override
     public Account save(Account account) {
         return iAccountRepo.save(account);
     }

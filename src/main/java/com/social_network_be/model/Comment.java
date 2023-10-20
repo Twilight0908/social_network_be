@@ -1,7 +1,4 @@
 package com.social_network_be.model;
-
-import com.social_network_be.model.Post;
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,9 +19,5 @@ public class Comment {
     @Lob
     private String content;
     private LocalDateTime time;
-
-    public Comment() {
-    }
-
 }
 

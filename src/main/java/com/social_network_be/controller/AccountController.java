@@ -19,8 +19,6 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private IAccountService accountService;
-    @Value("${upload.profile.path}")
-    private String fileUpload;
 
     @GetMapping("/apiAccount/allAccount")
     public ResponseEntity<List<Account>> getAllAccount() {
@@ -61,6 +59,21 @@ public class AccountController {
     private ResponseEntity<Account> editThumbnail(@PathVariable int id, @RequestBody Account user) {
         Account eUser = accountService.findById(id);
         eUser.setThumbnail(user.getThumbnail());
+        return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
+    }
+    @GetMapping("/apiAccount/search/{lastname}")
+    public List<Account> seach(@PathVariable String lastname){
+        List<Account> searchAccount = accountService.findAllByLastNameContaining(lastname);
+        for (int i = 0; i < searchAccount.size(); i++) {
+            searchAccount.get(i).setPassword("0");
+            searchAccount.get(i).setUsername("0");
+        }
+        return searchAccount;
+    }
+    @PostMapping("/editUser/password/{id}/{password}")
+    private ResponseEntity<Account> editPassword(@PathVariable int id, @PathVariable String password) {
+        Account eUser = accountService.findById(id);
+            eUser.setPassword(password);
         return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
     }
 }

@@ -43,11 +43,12 @@ public class MessageController {
                     .map(messageServiceModel -> modelMapper.map(messageServiceModel, MessageAllViewModel.class))
                     .collect(Collectors.toList());
     }
+//    api lấy tất cả danh sách tin nhắn của các người dùng theo thời gian gần nhất
     @GetMapping("/allFriend/{id}")
     public List<Message> getAllChatFriends(@PathVariable int id){
         return messageService.initialStateAllChatFriends(id);
     }
-
+// hàm được sử dụng để lấy danh sách tin nhắn từ bạn bè của người dùng hiện đang đăng nhập
     @PostMapping( "/friend")
     public List<MessageFriendsViewModel> getAllFriendMessages(@RequestBody Account principal) {
         Account accountPrincipal = accountService.findByUsername(principal.getUsername());
@@ -57,14 +58,16 @@ public class MessageController {
 //    gửi tin nhắn đến một người dùng cụ thể trong đó messageCreateBindingModel sẽ là nội dung tin nhắn
 //    trong đó bao gồm id của người nhận và content gửi đi
 //    và principal sẽ là account đang đăng nhập và máp MessageServiceModel sang message và lưu vào database ok
-    @MessageMapping("/message")
-    public void createPrivateChatMessages(@RequestBody MessageCreateBindingModel messageCreateBindingModel, Account principal) throws Exception {
+    @PostMapping("/chat/{id}")
+        public void createPrivateChatMessages(@PathVariable int id , @RequestBody MessageCreateBindingModel messageCreateBindingModel) throws Exception {
+        Account principal = accountService.findById(id);
         MessageServiceModel message = messageService.createMessage(messageCreateBindingModel, principal.getUsername());
         MessageAllViewModel messageAllViewModel = this.modelMapper.map(message, MessageAllViewModel.class);
+        messageAllViewModel.setPrincipal(principal);
         if (messageAllViewModel != null) {
             String response = objectMapper.writeValueAsString(messageAllViewModel);
-            template.convertAndSend("/user/" + message.getToUser().getUsername() + "/queue/position-update", response);
-            template.convertAndSend("/user/" + message.getFromUser().getUsername() + "/queue/position-update", response);
+            template.convertAndSend("/chat/user/queue/position-update", response);
+            template.convertAndSend("/chat/user/queue/position-update", response);
             return;
         }
         throw new Exception("Error Create Message !");

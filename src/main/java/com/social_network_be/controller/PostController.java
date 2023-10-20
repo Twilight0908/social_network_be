@@ -31,80 +31,22 @@ public class PostController {
     IAccountService accountService;
     @Autowired
     IStatusService statusService;
-    @Value("${upload.profile.path}")
-    private String fileUpload;
 
     @GetMapping("/apiStatus")
     public ResponseEntity<List<Status>> getAllStatus() {
         return ResponseEntity.ok(statusService.getAll());
     }
 
-    @PostMapping("{id}")
-    public ResponseEntity<Post> createPost(@PathVariable int id
-            , @RequestParam(value = "content") String content
-            , @RequestParam(value = "statusId") int statusId
-            , @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        String fileName = null;
-        int count = 0;
-        if (content != null) {
-            count++;
-        }
-        if (file != null) {
-            count++;
-            fileName = file.getOriginalFilename();
-            String filePath = fileUpload + "/" + fileName;
-            File imageFile = new File(filePath);
-            if (!imageFile.exists()) {
-                file.transferTo(imageFile);
-            }
-        }
-        Post newPost = new Post();
-        newPost.setContent(content);
-        newPost.setTime(LocalDateTime.now());
-        newPost.setLoggedInUser(accountService.findById(id));
-        newPost.setImage(fileName);
-        newPost.setStatus(new Status(statusId));
-        if (count <= 0) {
-            return new ResponseEntity<>(newPost, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(postService.save(newPost), HttpStatus.OK);
-    }
     @PostMapping("/createPost")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         post.setTime(LocalDateTime.now());
         return new ResponseEntity<>(postService.save(post), HttpStatus.CREATED);
     }
-    @PostMapping("/{idAccount}/{idPost}")
-    public ResponseEntity<Post> updatePost(@PathVariable int idAccount
-            , @PathVariable int idPost
-            , @RequestParam(value = "content") String content
-            , @RequestParam(value = "statusId") int statusId
-            , @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        String fileName = null;
-        int count = 0;
-        if (content != null) {
-            count++;
-        }
-        if (file != null) {
-            count++;
-            fileName = file.getOriginalFilename();
-            String filePath = fileUpload + "/" + fileName;
-            File imageFile = new File(filePath);
-            if (!imageFile.exists()) {
-                file.transferTo(imageFile);
-            }
-        }
-        Post newPost = new Post();
-        newPost.setId(idPost);
-        newPost.setContent(content);
-        newPost.setTime(LocalDateTime.now());
-        newPost.setLoggedInUser(accountService.findById(idAccount));
-        newPost.setImage(fileName);
-        newPost.setStatus(new Status(statusId));
-        if (count <= 0) {
-            return new ResponseEntity<>(newPost, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(postService.save(newPost), HttpStatus.OK);
+    @PostMapping("/updatePost")
+    public ResponseEntity<Post> updatePost(@RequestBody Post post){
+        Post ePost = postService.findById(post.getId());
+        post.setTime(ePost.getTime());
+        return new ResponseEntity<>(postService.save(post), HttpStatus.OK);
     }
 
     @GetMapping

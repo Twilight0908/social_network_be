@@ -1,5 +1,6 @@
 package com.social_network_be.service.impl;
 
+import com.social_network_be.model.Account;
 import com.social_network_be.model.Follow;
 import com.social_network_be.repository.IFollowRepo;
 import com.social_network_be.service.iService.IFollowService;
@@ -36,5 +37,10 @@ public class FollowServiceImpl implements IFollowService {
     @Override
     public List<Follow> getAll() {
         return null;
+    }
+
+    @Override
+    public List<Follow> findAllByAccount(Account account) {
+        return followRepo.findAllByAccount(account);
     }
 }
