@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IFriendRequestRepo extends JpaRepository<FriendRequest , Integer> {
     List<FriendRequest> findAllByFromUser(Account fromUser);
+    List<FriendRequest> findAllByToUser(Account toUser);
 }

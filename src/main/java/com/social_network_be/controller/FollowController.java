@@ -1,9 +1,11 @@
 package com.social_network_be.controller;
 
 import com.social_network_be.model.Account;
+import com.social_network_be.model.FavouriteToUser;
 import com.social_network_be.model.Follow;
 import com.social_network_be.model.FriendRequest;
 import com.social_network_be.service.iService.IAccountService;
+import com.social_network_be.service.iService.IFavouriteToUserService;
 import com.social_network_be.service.iService.IFollowService;
 import com.social_network_be.service.iService.IFriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class FollowController {
     IFollowService followService;
     @Autowired
     IAccountService accountService;
+    @Autowired
+    IFavouriteToUserService favouriteToUserService;
 //    gửi lời mời kết bạn
     @PostMapping("addFriendRequest")
     public FriendRequest addFriendRequest(@RequestBody FriendRequest friendRequest){
@@ -40,6 +44,19 @@ public class FollowController {
     public List<FriendRequest> getAllFriendRequest(@PathVariable int id){
         Account fromUser = accountService.findById(id);
         List<FriendRequest> friendRequests = friendRequestService.findAllByFromUser(fromUser);
+        for (int i = 0; i < friendRequests.size(); i++) {
+            friendRequests.get(i).getFromUser().setUsername("0");
+            friendRequests.get(i).getFromUser().setPassword("0");
+            friendRequests.get(i).getToUser().setUsername("0");
+            friendRequests.get(i).getToUser().setPassword("0");
+        }
+        return friendRequests;
+    }
+//    api lấy danh sách gợi ý kết bạn
+    @GetMapping("/getAllFriendshipSuggestions/{id}")
+    public List<FavouriteToUser> getAllFriendshipSuggestions(@PathVariable int id){
+        Account toUser = accountService.findById(id);
+        List<FavouriteToUser> friendRequests = favouriteToUserService.findAllByToUser(toUser);
         for (int i = 0; i < friendRequests.size(); i++) {
             friendRequests.get(i).getFromUser().setUsername("0");
             friendRequests.get(i).getFromUser().setPassword("0");
@@ -66,7 +83,7 @@ public class FollowController {
     @GetMapping("/allFollow/{id}")
     public List<Follow> finAllFollow(@PathVariable int id){
         Account account = accountService.findById(id);
-        return followService.findAllByAccount(account);
+        return followService.findAllByAccountOrFollowedAccount(account,account);
     }
 //    api xóa lời mời kết bạn
     @GetMapping("/deleteFriendRequest/{id}")

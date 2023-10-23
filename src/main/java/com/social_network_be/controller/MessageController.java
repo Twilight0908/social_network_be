@@ -33,7 +33,7 @@ public class MessageController {
     @Autowired
     private ObjectMapper objectMapper;
 //    http://localhost:8080/message/all/{id}
-//trong hàm getAllMessages @PathVariable int id sẽ là người bên kia nhắn
+//    trong hàm getAllMessages @PathVariable int id sẽ là người bên kia nhắn
 //    và @RequestBody Account principal sẽ là chủ thể của mình đang đăng nhập
     @PostMapping( "/all/{id}")
     public List<MessageAllViewModel> getAllMessages(@PathVariable int id ,@RequestBody Account principal) {

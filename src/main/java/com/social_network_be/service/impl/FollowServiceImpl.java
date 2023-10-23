@@ -40,7 +40,7 @@ public class FollowServiceImpl implements IFollowService {
     }
 
     @Override
-    public List<Follow> findAllByAccount(Account account) {
-        return followRepo.findAllByAccount(account);
+    public List<Follow> findAllByAccountOrFollowedAccount(Account account, Account followedAccount) {
+        return followRepo.findAllByAccountOrFollowedAccount(account,followedAccount);
     }
 }

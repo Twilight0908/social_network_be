@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IFriendRequestService extends IService<FriendRequest>{
     List<FriendRequest> findAllByFromUser(Account fromUser);
+    List<FriendRequest> findAllByToUser(Account toUser);
 }

@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface IFollowRepo extends CrudRepository<Follow, Integer> {
-    List<Follow> findAllByAccount(Account account);
+    List<Follow> findAllByAccountOrFollowedAccount(Account account , Account followedAccount);
 
 }

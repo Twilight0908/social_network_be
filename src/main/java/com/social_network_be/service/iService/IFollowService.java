@@ -6,5 +6,5 @@ import com.social_network_be.model.Follow;
 import java.util.List;
 
 public interface IFollowService extends IService<Follow> {
-    List<Follow> findAllByAccount(Account account);
+    List<Follow> findAllByAccountOrFollowedAccount(Account account , Account followedAccount);
 }

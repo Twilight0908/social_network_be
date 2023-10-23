@@ -3,15 +3,9 @@ package com.social_network_be.controller;
 import com.social_network_be.model.Account;
 import com.social_network_be.service.iService.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -62,7 +56,7 @@ public class AccountController {
         return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
     }
     @GetMapping("/apiAccount/search/{lastname}")
-    public List<Account> seach(@PathVariable String lastname){
+    public List<Account> search(@PathVariable String lastname){
         List<Account> searchAccount = accountService.findAllByLastNameContaining(lastname);
         for (int i = 0; i < searchAccount.size(); i++) {
             searchAccount.get(i).setPassword("0");

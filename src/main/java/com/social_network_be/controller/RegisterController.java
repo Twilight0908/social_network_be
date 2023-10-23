@@ -60,8 +60,8 @@ public class RegisterController {
 //    }
     @PostMapping("/register")
     public ResponseEntity<Account> createUser(@RequestBody Account user) {
-        user.setAvatar("https://firebasestorage.googleapis.com/v0/b/uploadingfile-7b8bd.appspot.com/o/images%2Favatar-dep-nhat-33_112147.jpgfd5c4dd3-cd7e-4483-aee1-964589dac784?alt=media&token=b27cc73c-9fd8-4167-9b37-256caf8c372e");
-        user.setThumbnail("https://firebasestorage.googleapis.com/v0/b/uploadingfile-7b8bd.appspot.com/o/images%2Fanh-bau-troi-dep-hoang-hon-huyen-bi_042052103.jpgbae44423-164d-42ed-95c7-858a1f031187?alt=media&token=d64b3c56-d8ec-4022-8670-8dd58d8c2674");
+        user.setAvatar("https://firebasestorage.googleapis.com/v0/b/uploadingfile-e1825.appspot.com/o/images%2FAvatar-trang-den.pnge4b89c78-0bbf-4cf1-8450-1da78067593c?alt=media&token=7e278413-55c4-42d2-b4c6-52a96d624e33");
+        user.setThumbnail("https://firebasestorage.googleapis.com/v0/b/uploadingfile-e1825.appspot.com/o/images%2F305308526_3179553258977374_1832262922211436074_n.jpg8150ca58-239e-4c4c-b2e6-784d863b51eb?alt=media&token=c0b9913c-7a2f-4818-b520-b1e24a42f1f2");
         user.setCreatedAt(LocalDateTime.now());
         user.setBan(false);
         user.setOnline(false);

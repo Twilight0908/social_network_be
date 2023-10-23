@@ -41,4 +41,9 @@ public class FriendRequestServiceImpl implements IFriendRequestService {
     public List<FriendRequest> findAllByFromUser(Account fromUser) {
         return friendRequestRepo.findAllByFromUser(fromUser);
     }
+
+    @Override
+    public List<FriendRequest> findAllByToUser(Account toUser) {
+        return friendRequestRepo.findAllByToUser(toUser);
+    }
 }
