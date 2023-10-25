@@ -39,11 +39,24 @@ public class FollowController {
         }
         return friendRequestService.save(friendRequest);
     }
-//    api lấy danh sách lời mời
+//    api lấy danh sách lời mời của mình
     @GetMapping("/getFriendRequest/{id}")
     public List<FriendRequest> getAllFriendRequest(@PathVariable int id){
         Account fromUser = accountService.findById(id);
         List<FriendRequest> friendRequests = friendRequestService.findAllByFromUser(fromUser);
+        for (int i = 0; i < friendRequests.size(); i++) {
+            friendRequests.get(i).getFromUser().setUsername("0");
+            friendRequests.get(i).getFromUser().setPassword("0");
+            friendRequests.get(i).getToUser().setUsername("0");
+            friendRequests.get(i).getToUser().setPassword("0");
+        }
+        return friendRequests;
+    }
+
+    @GetMapping("/getFriendRequestToUser/{id}")
+    public List<FriendRequest> getAllFriendRequestToUser(@PathVariable int id){
+        Account fromUser = accountService.findById(id);
+        List<FriendRequest> friendRequests = friendRequestService.findAllByToUser(fromUser);
         for (int i = 0; i < friendRequests.size(); i++) {
             friendRequests.get(i).getFromUser().setUsername("0");
             friendRequests.get(i).getFromUser().setPassword("0");
@@ -72,6 +85,7 @@ public class FollowController {
         Follow follow = new Follow();
         follow.setAccount(friendRequest.getFromUser());
         follow.setFollowedAccount(friendRequest.getToUser());
+        friendRequestService.delete(id);
         return followService.save(follow);
     }
 //    api delete bạn bè

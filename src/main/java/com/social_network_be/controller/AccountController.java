@@ -55,19 +55,25 @@ public class AccountController {
         eUser.setThumbnail(user.getThumbnail());
         return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
     }
-    @GetMapping("/apiAccount/search/{lastname}")
-    public List<Account> search(@PathVariable String lastname){
-        List<Account> searchAccount = accountService.findAllByLastNameContaining(lastname);
+    @GetMapping("/apiAccount/search/{name}")
+    public List<Account> search(@PathVariable String name){
+        List<Account> searchAccount = accountService.findAllByFirstNameOrLastNameContaining(name);
         for (int i = 0; i < searchAccount.size(); i++) {
             searchAccount.get(i).setPassword("0");
             searchAccount.get(i).setUsername("0");
         }
         return searchAccount;
     }
-    @PostMapping("/editUser/password/{id}/{password}")
-    private ResponseEntity<Account> editPassword(@PathVariable int id, @PathVariable String password) {
+    @PostMapping("/editUser/{id}/password")
+    private ResponseEntity<Account> editPassword(@PathVariable int id,
+                                              @RequestParam("oPassword") String oPassword,
+                                              @RequestParam("nPassword") String nPassword) {
         Account eUser = accountService.findById(id);
-            eUser.setPassword(password);
+        if (eUser.getPassword().equals(oPassword)) {
+            eUser.setPassword(nPassword);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(accountService.edit(eUser), HttpStatus.OK);
     }
 }

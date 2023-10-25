@@ -37,6 +37,7 @@ public class Account {
 
     @ManyToOne
     private Role role;
+
     @OneToMany
     private List<Message> fromUserMessagesList;
     @OneToMany

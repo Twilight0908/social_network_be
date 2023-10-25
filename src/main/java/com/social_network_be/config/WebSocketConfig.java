@@ -1,6 +1,7 @@
 package com.social_network_be.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -27,8 +28,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        registration.setMessageSizeLimit(200000); // default : 64 * 1024
-        registration.setSendTimeLimit(20 * 10000); // default : 10 * 10000
-        registration.setSendBufferSizeLimit(3* 512 * 1024); // default : 512 * 1024
+        // Cấu hình các thông số thời gian chờ và kích thước cho WebSocket
+        registration.setMessageSizeLimit(200000); // Giới hạn kích thước tin nhắn đến
+        registration.setSendTimeLimit(20 * 10000); // Thời gian tối đa để gửi tin nhắn
+        registration.setSendBufferSizeLimit(3 * 512 * 1024); // Kích thước bộ đệm cho việc gửi tin nhắn
+    }
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        // Cấu hình thời gian chờ không hoạt động (inactivity) cho kết nối WebSocket
+        registration.taskExecutor().keepAliveSeconds(20000); // Cấu hình thời gian không hoạt động (milliseconds)
+        registration.taskExecutor().keepAliveSeconds(20000); // Cấu hình thời gian không hoạt động (milliseconds)
     }
 }

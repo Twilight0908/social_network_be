@@ -16,27 +16,27 @@ public class FollowServiceImpl implements IFollowService {
 
     @Override
     public Follow save(Follow follow) {
-        return null;
+        return followRepo.save(follow);
     }
 
     @Override
     public Follow edit(Follow follow) {
-        return null;
+        return followRepo.save(follow);
     }
 
     @Override
     public void delete(int id) {
-
+       followRepo.deleteById(id);
     }
 
     @Override
     public Follow findById(int id) {
-        return null;
+        return followRepo.findById(id).get();
     }
 
     @Override
     public List<Follow> getAll() {
-        return null;
+        return (List<Follow>) followRepo.findAll();
     }
 
     @Override
